@@ -1,0 +1,1 @@
+$BITCOIN_BIN/bitcoin-cli -datadir=$BITCOIN_DATADIR -regtest $@
