@@ -1,1 +1,1 @@
-$BITCOIN_BIN/bitcoin-qt -datadir=$BITCOIN_DATADIR -testnet $@
+$BITCOIN_BIN/bitcoin-qt -datadir=$BITCOIN_DATADIR -testnet "$@"
