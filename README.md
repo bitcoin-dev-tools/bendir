@@ -1,6 +1,6 @@
-# BENDY
+# BENDIR
 
-use `direnv` to manage signet, regtest, and testnet automatically via directories and environment variables.
+`direnv` to manage signet, regtest, and testnet automatically via directories and environment variables.
 
 ## how to use
 
