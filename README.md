@@ -1,4 +1,5 @@
 # BENDIR
+![image](https://user-images.githubusercontent.com/7444140/213140436-340280aa-34b6-43dd-ab4e-19f9ffdce862.png)
 
 `direnv` to manage signet, regtest, and testnet automatically via directories and environment variables.
 
