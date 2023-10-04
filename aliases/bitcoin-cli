@@ -1,0 +1,6 @@
+#!/bin/bash
+if ! network_check; then 
+    exit 1
+fi
+[[ $BITCOIN_NETWORK == "mainnet" ]] && RPC_NETWORK="" || RPC_NETWORK="-${BITCOIN_NETWORK}"
+$BITCOIN_BIN/bitcoin-cli -datadir=$BITCOIN_DATADIR $RPC_NETWORK -named "$@"

@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# Check if network is set
+if [ -z "${BITCOIN_NETWORK}" ]; then
+    echo "Network is not set. Run init <network> or edit the .envrc file directly"
+    exit 1
+fi
+

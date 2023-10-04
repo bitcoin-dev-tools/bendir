@@ -1,0 +1,6 @@
+#!/bin/bash
+if ! network_check; then 
+    exit 1
+fi
+[[ $BITCOIN_NETWORK == "mainnet" ]] && DIR_NETWORK="" || DIR_NETWORK="${BITCOIN_NETWORK}"
+tail -f $BITCOIN_DATADIR/$DIR_NETWORK/debug.log

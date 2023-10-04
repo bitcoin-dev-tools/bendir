@@ -1,0 +1,6 @@
+#!/bin/bash
+
+bitcoin-cli stop
+sed -i.bak "s/^export BITCOIN_NETWORK=.*$/export BITCOIN_NETWORK=''/" "$ENVRC_FILE"
+direnv allow
+

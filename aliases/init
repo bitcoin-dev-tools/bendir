@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# Check if an argument is provided
+if [ "$#" -ne 1 ]; then
+    echo "Usage: $0 <NETWORK> (choose one of mainnet, signet, regtest, testnet)"
+    exit 1
+fi
+
+if [[ ${BITCOIN_NETWORK-} ]]; then
+    echo "Network is already set to $BITCOIN_NETWORK. If you want to start over, run wipe to stop your node and unset the network variable."
+    exit 1
+fi
+
+NETWORK=$1
+
+# Check if .envrc file exists
+if [ ! -f "$ENVRC_FILE" ]; then
+    echo "$ENVRC_FILE does not exist."
+    exit 1
+fi
+# Check if sed command was successful
+if ! sed -i.bak "s/^export BITCOIN_NETWORK=.*$/export BITCOIN_NETWORK=$NETWORK/" "$ENVRC_FILE"; then
+    echo "Failed to update field BITCOIN_NETWORK in $ENVRC_FILE."
+    exit 1
+else
+    echo "Network set to $1, run bitcoind to get started"
+fi
+if ! direnv allow; then
+    echo "direnv allow failed, make sure you have direnv installed and try again."
+fi

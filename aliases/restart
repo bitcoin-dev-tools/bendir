@@ -1,0 +1,1 @@
+bitcoin-cli stop && sleep 5 && bitcoind

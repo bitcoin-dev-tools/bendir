@@ -1,0 +1,6 @@
+#!/bin/bash
+if ! network_check; then 
+    exit 1
+fi
+[[ $BITCOIN_NETWORK == "mainnet" ]] && DAEMON_NETWORK="" || DAEMON_NETWORK="-${BITCOIN_NETWORK}"
+$BITCOIN_BIN/bitcoind -datadir=$BITCOIN_DATADIR $DAEMON_NETWORK "$@"

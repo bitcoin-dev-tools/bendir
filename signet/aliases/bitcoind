@@ -1,1 +1,0 @@
-$BITCOIN_BIN/bitcoind -datadir=$BITCOIN_DATADIR -signet "$@"
