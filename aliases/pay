@@ -1,0 +1,66 @@
+#!/bin/bash
+
+# Default to mainnet if no argument is provided
+NETWORK="mainnet"
+
+# Help text
+display_help() {
+    echo "Usage: $0 [OPTION] EMAIL"
+    echo "Fetch payment information for a given email address."
+    echo ""
+    echo "Available options:"
+    echo "  -signet, -regtest, -testnet, -mainnet  Specify the network (default: mainnet)"
+    echo "  -h, --help                             Display this help and exit"
+    exit 0
+}
+
+# Function to check and set the network
+set_network() {
+    case $1 in
+        -signet|-regtest|-testnet|-mainnet)
+            NETWORK="${1#-}"
+            return 0
+            ;;
+        -h|--help)
+            display_help
+            ;;
+        *)
+            return 1
+            ;;
+    esac
+}
+
+# If no arguments are provided, display help
+if [ "$#" -eq 0 ]; then
+    display_help
+fi
+
+# Check the first and second arguments for the network flag or help
+if ! set_network $1; then
+    set_network $2
+    EMAIL_ARG=$1
+else
+    EMAIL_ARG=$2
+fi
+
+read user domain < <(echo $EMAIL_ARG | awk -F@ '{print $1, $2}')
+
+# Fetch the JSON and check if the network exists in the structure
+JSON=$(curl --max-time 3 -s -f https://$domain/.well-known/silent-payments/$user)
+CURL_EXIT_STATUS=$?
+
+if [ $CURL_EXIT_STATUS -ne 0 ]; then
+    echo "Error: Failed to fetch data from https://$domain/.well-known/silent-payments/$user"
+    echo "Are you sure $user@$domain has a silent payment address configured?"
+    exit 1
+fi
+
+if ! echo "$JSON" | jq -e --arg network "$NETWORK" 'has($network)' > /dev/null; then
+    echo "Error: $user does not have a $NETWORK silent payment address. Try one of:"
+    echo $JSON | jq
+    exit 1
+fi
+
+# Extract the value for the provided network
+echo "$JSON" | jq -r --arg network "$NETWORK" '.[$network]'
+
